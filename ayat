@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # ayat installer.
-# to do
-# تثبيت برنامج 
+
 # install aptitude
 apt-get -y install aptitude
 # activate i368 support
