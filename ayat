@@ -1,21 +1,43 @@
 #!/bin/bash
 
-# ayat installer.
+# ayat installer script.
 
-# install aptitude
-apt-get -y install aptitude
-# activate i368 support
-dpkg --add-architecture i386 && aptitude update
-# install adobe air depends
-aptitude -y install libxt6:i386 libnspr4-0d:i386 libgtk2.0-0:i386 libstdc++6:i386 libnss3-1d:i386 lib32nss-mdns libxml2:i386 libxslt1.1:i386 libcanberra-gtk-module:i386 gtk2-engines-murrine:i386 libgnome-keyring0:i386
-# symblic links for adobe air
+# activate i368 support and install adobe air depends
+dpkg --add-architecture i386 && apt-get update && apt-get --assume-yes install libxt6:i386 libnspr4-0d:i386 \
+	     libgtk2.0-0:i386 libstdc++6:i386 libnss3-1d:i386 lib32nss-mdns libxml2:i386 libxslt1.1:i386 \
+	     libcanberra-gtk-module:i386 gtk2-engines-murrine:i386 libgnome-keyring0:i386
+# symbolic links to make adobe air able to see gnome-keyring
 ln -s /usr/lib/i386-linux-gnu/libgnome-keyring.so.0 /usr/lib/libgnome-keyring.so.0
 ln -s /usr/lib/i386-linux-gnu/libgnome-keyring.so.0.2.0 /usr/lib/libgnome-keyring.so.0.2.0
-# download adobe air
-wget http://airdownload.adobe.com/air/lin/download/2.6/AdobeAIRInstaller.bin
+# get adobe air
+DOWNLOAD_ADOBEAIR="wget --output-document=AdobeAIRInstaller.bin \
+		   http://airdownload.adobe.com/air/lin/download/2.6/AdobeAIRInstaller.bin"
+if [ -e AdobeAIRInstaller.bin ]; then # if file exist then check it's md5sum, else download it
+ADOBEAIR_MD5SUM="a91369be7ab40e3c5d5bc9fb02b95041  AdobeAIRInstaller.bin"
+if [ "$(md5sum AdobeAIRInstaller.bin)" != "$ADOBEAIR_MD5SUM" ]; then # if it have different md5sum then download it
+$DOWNLOAD_ADOBEAIR
+fi
+else
+$DOWNLOAD_ADOBEAIR
+fi
 # install adobe air
 chmod 755 AdobeAIRInstaller.bin
-./AdobeAIRInstaller.bin && rm /usr/lib/libgnome-keyring.so.0 /usr/lib/libgnome-keyring.so.0.2.0
+./AdobeAIRInstaller.bin -silent && rm /usr/lib/libgnome-keyring.so.0 /usr/lib/libgnome-keyring.so.0.2.0
+# install libcurl for ayat sound
+apt-get --assume-yes install libcurl3:i386
+# get ayat
+DOWNLOAD_AYATAIR="wget --output-document=Ayat-v1.4.air \
+		  https://dl.dropboxusercontent.com/s/js4efj0l4belci9/Ayat-v1.4.air"
+if [ -e Ayat-v1.4.air ]; then # if file exist then check it's md5sum, else download it
+AYATAIR_MD5SUM="1cb481cab75b89256fce87b0279c6fbe  Ayat-v1.4.air"
+if [ "$(md5sum Ayat-v1.4.air)" != "$AYATAIR_MD5SUM" ]; then # if it have different md5sum then download it
+$DOWNLOAD_AYATAIR
+fi      
+else
+$DOWNLOAD_AYATAIR
+fi
 # install ayat
-aptitude -y install libcurl3:i386
-/opt/Adobe\ AIR/Versions/1.0/Adobe\ AIR\ Application\ Installer
+/opt/Adobe\ AIR/Versions/1.0/Adobe\ AIR\ Application\ Installer -silent -eulaAccepted $(pwd)/Ayat-v1.4.air
+# run ayat
+setsid /opt/Ayat/bin/Ayat 2&>> /dev/null&
+exit
