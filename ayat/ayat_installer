@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# ayat installer script.
+# Ayat installer script by ibrahim mohammad
+# Email: ibrahim.mohammad.2015@gmail.com
+# GitHub repository: https://github.com/IbrahimMohammad/shell_script
+# No Rights Reserved
 
 if [ $EUID -ne 0 ]; then # if non root user run the script
 	echo 'This script must be run as root. use command sudo ./ayat or su -c ./ayat to run it.'
@@ -44,7 +47,7 @@ multi_arch_steps () { # commands needed for x64-bit and x32-bit systems
 	exit
 }
 
-# here we go
+# here we go!
 sys_arch="$(dpkg --print-architecture)"
 # for 64-bit systems
 if [ $sys_arch == "amd64" ]; then
@@ -65,7 +68,7 @@ elif [ $sys_arch == "i386" ]; then
 	multi_arch_steps
 # for other architectures
 else
-	echo "Sorry this script is for 64-bit and 32-bit systems."
-	echo "عذراً هذا السكربت لانظمة 64 بت و 32 بت."
+	echo "Sorry, this script is for 64-bit or 32-bit system."
+	echo ".عذراً، هذا السكربت لنظام 64 بت أو 32 بت."
 	exit
 fi
