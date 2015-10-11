@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Selected text translator by ibrahim mohammad
+# Email: ibrahim.mohammad.2015@gmail.com
+# GitHub repository: https://github.com/IbrahimMohammad/shell_script
+# No Rights Reserved
+
+if [ $EUID -ne 0 ]; then # if non root user run the script
+    echo 'This script must be run as root. use command sudo ./st-translator or su -c ./st-translator to run it.'
+    echo 'يجب تشغيل هذا السكربت كمستخدم جذر. استخدم الأمر sudo ./st-translator أو su -c ./st-translator لتشغيله.'
+    exit 1
+fi
+# install depends
+apt-get --assume-yes install libnotify-bin xsel xbindkeys || exit 1
+# run next commands as the logged in user
+if [ -n "$SUDO_USER" ]; then
+    user=$SUDO_USER
+else
+    user=$USERNAME
+fi
+# add script to shortcut alt+t
+su - $user --command 'echo '\"notify-send -u critical "$(xsel -o)" "$(wget -U "Mozilla/5.0" -qO - \
+"https://translate.google.com/translate_a/single?client=t&sl=en&tl=ar&hl=ar&dt=bd&dt=ex&dt=ld&dt=md\
+&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&dt=at&ie=UTF-8&oe=UTF-8&rom=1&srcrom=1&ssel=5&tsel=4&tk=519531|630690&q=\
+$(xsel -o)" | sed 's/\[\[\[\"//' | cut -d \" -f 1)"\"' >> ~/.xbindkeysrc'
+# 
+su - $user --command 'echo "Alt + t" >> ~/.xbindkeysrc'
+# update xbindkeys to use the new shortcutkey
+su -c $user --command "xbindkeys"
+exit
