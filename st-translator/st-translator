@@ -24,6 +24,7 @@ su - $user --command 'wget -qO ~/.st-translator \
 # add script to shortcut alt+t
 su - $user --command 'echo "\"~/.st-translator\"" >> ~/.xbindkeysrc'
 su - $user --command 'echo "Alt + t" >> ~/.xbindkeysrc'
+su - $user --command 'chmod 755 .st-translator'
 # update xbindkeys to use the new shortcutkey
-su -c $user --command "xbindkeys"
+su - $user --command 'xbindkeys'
 exit
