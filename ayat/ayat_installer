@@ -7,7 +7,7 @@
 
 if [ $EUID -ne 0 ]; then # if non root user run the script
 	echo 'This script must be run as root. use command sudo ./ayat_installer or su -c ./ayat_installer to run it.'
-	echo 'يجب تشغيل هذا السكربت كمستخدم جذر. استخدم الأمر sudo ./ayat أو su -c ./ayat لتشغيله.'
+	echo 'يجب تشغيل هذا السكربت كمستخدم جذر. استخدم الأمر sudo ./ayat_installer أو su -c ./ayat_installer لتشغيله.'
 	exit 1
 fi
 
