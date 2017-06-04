@@ -27,7 +27,7 @@ multi_arch_steps () { # commands needed for x64-bit and x32-bit systems
 	ln -s /usr/lib/i386-linux-gnu/libgnome-keyring.so.0 /usr/lib/libgnome-keyring.so.0
 	ln -s /usr/lib/i386-linux-gnu/libgnome-keyring.so.0.2.0 /usr/lib/libgnome-keyring.so.0.2.0
 	# get adobe air
-	get_file AdobeAIRInstaller.bin http://airdownload.adobe.com/air/lin/download/2.6/ a91369be7ab40e3c5d5bc9fb02b95041
+	get_file adobeair.deb http://airdownload.adobe.com/air/lin/download/2.6/adobeair.deb a8d7051edf745d8b73d798f833f1c339
 	# install adobe air
 	chmod 755 AdobeAIRInstaller.bin
 	./AdobeAIRInstaller.bin -silent || exit 1
